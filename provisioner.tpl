@@ -18,7 +18,7 @@ sudo yum install git -y
 #Install terraform
 sudo yum update -y 
 sudo yum install -y wget unzip
-sudo wget https://releases.hashicorp.com/terraform/0.12.2/terraform_0.12.2_linux_amd64.zip
+sudo wget https://releases.hashicorp.com/terraform/1.2.6/terraform_1.2.6_linux_amd64.zip
 sudo unzip ./terraform_0.12.2_linux_amd64.zip -d /usr/local/bin
 
 #Set commands to install eksctl
@@ -34,5 +34,10 @@ echo 'export AWS_SECRET_ACCESS_KEY=' >> /home/ec2-user/.bashrc
 echo 'export AWS_DEFAULT_REGION=' >> /home/ec2-user/.bashrc
 echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name "' >> /home/ec2-user/.bashrc
 
+#terraform shortcuts
+tinit="terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars"
+tplan="terraform plan -var-file=test.tfvars"
+tapply="terraform apply -var-file=test.tfvars -auto-approve"
+
 #Clone repository
-git clone https://github.com/mcberra/eks-test.git
+git clone https://github.com/mcberra/eks-test.git /home/ec2-user

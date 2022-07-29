@@ -1,14 +1,4 @@
-provider "aws" {
-  region     = var.region
-  access_key = var.access_key
-  secret_key = var.secret_key
-  default_tags {
-    tags = {
-      Environment       = terraform.workspace
-      Terraform_managed = "true"
-    }
-  }
-}
+
 data "aws_eks_cluster" "macb-eks" {
   name = "macb-eks"
 
@@ -23,15 +13,7 @@ data "aws_eks_cluster_auth" "macb-eks" {
     aws_eks_cluster.macb-eks
   ]
 }
-provider "kubernetes" {
-  host                   = data.aws_eks_cluster.macb-eks.endpoint
-  cluster_ca_certificate = base64decode(data.aws_eks_cluster.macb-eks.certificate_authority[0].data)
-  exec {
-    api_version = "client.authentication.k8s.io/v1alpha1"
-    args        = ["eks", "get-token", "--cluster-name", aws_eks_cluster.macb-eks.name]
-    command     = "aws"
-  }
-}
+
 #Create cluster role
 resource "aws_iam_role" "macb-eks-iam-role" {
   name               = "macb-eks-iam-role"
@@ -142,12 +124,4 @@ resource "aws_eks_node_group" "worker-node-group" {
   ]
 }
 
-module "vpc" {
-  source           = "./modules/vpc_project"
-  public_subnet_1  = module.vpc.eks-public-subnet-id-1
-  public_subnet_2  = module.vpc.eks-public-subnet-id-2
-  private_subnet_1 = module.vpc.eks-private-subnet-id-1
-  private_subnet_2 = module.vpc.eks-private-subnet-id-2
-  sg_id            = module.vpc.eks-sg-id
-}
 

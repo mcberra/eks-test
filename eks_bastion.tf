@@ -5,20 +5,47 @@ resource "aws_instance" "eks_bastion" {
   associate_public_ip_address = "true"
   vpc_security_group_ids      = [module.vpc.eks-sg-id]
   iam_instance_profile        = aws_iam_instance_profile.eks-bastion-profile.name
+  key_name                    = aws_key_pair.generated.key_name
   user_data                   = file("provisioner.tpl")
 
   tags = {
     "Name" = "eks_bastion"
   }
 
-  key_name = aws_key_pair.generated.key_name
-  connection {
-    user        = "ec2-user"
-    private_key = tls_private_key.generated.private_key_pem
-    host        = self.public_ip
+  provisioner "file" {
+    source      = "test.tfvars"
+    destination = "/home/ec2-user/eks-test"
+
+    connection {
+      user        = "ec2-user"
+      private_key = tls_private_key.generated.private_key_pem
+      host        = self.public_ip
+    }
   }
 
+  provisioner "file" {
+    source      = "backend_config.tfvars"
+    destination = "/home/ec2-user/eks-test"
+
+    connection {
+      user        = "ec2-user"
+      private_key = tls_private_key.generated.private_key_pem
+      host        = self.public_ip
+    }
+  }
+  provisioner "file" {
+    source      = ".gitignore"
+    destination = "/home/ec2-user/eks-test"
+
+    connection {
+      user        = "ec2-user"
+      private_key = tls_private_key.generated.private_key_pem
+      host        = self.public_ip
+    }
+  }
 }
+
+
 
 resource "tls_private_key" "generated" {
   algorithm = "RSA"
