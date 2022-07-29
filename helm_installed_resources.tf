@@ -1,4 +1,4 @@
-resource "helm_release" "example" {
+resource "helm_release" "istio" {
   name       = "istio"
   repository = "https://charts.cloudposse.com/incubator/"
   chart      = "istio"
