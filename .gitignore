@@ -43,3 +43,6 @@ terraform.rc
 
 #Lockfile
 *.hcl
+
+#PEM
+*.pem

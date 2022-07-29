@@ -12,6 +12,9 @@ sudo yum install epel-release -y
 sudo yum update -y
 sudo yum install jq -y
 
+#Install Git
+yum install git -y
+
 #Install terraform
 sudo yum update -y 
 sudo yum install -y wget unzip
@@ -30,3 +33,6 @@ echo 'export AWS_ACCESS_KEY_ID=' >> /home/ec2-user/.bashrc
 echo 'export AWS_SECRET_ACCESS_KEY=' >> /home/ec2-user/.bashrc
 echo 'export AWS_DEFAULT_REGION=' >> /home/ec2-user/.bashrc
 echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name "' >> /home/ec2-user/.bashrc
+
+#Clone repository
+git clone https://github.com/mcberra/eks-test.git

@@ -1,3 +1,4 @@
+/*
 resource "kubernetes_namespace" "test" {
   metadata {
     name = "nginx"
@@ -50,3 +51,4 @@ resource "kubernetes_service" "test" {
     }
   }
 }
+*/
