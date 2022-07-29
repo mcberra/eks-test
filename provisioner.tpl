@@ -13,7 +13,7 @@ sudo yum update -y
 sudo yum install jq -y
 
 #Install Git
-yum install git -y
+sudo yum install git -y
 
 #Install terraform
 sudo yum update -y 
