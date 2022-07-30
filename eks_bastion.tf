@@ -14,7 +14,7 @@ resource "aws_instance" "eks_bastion" {
 
   provisioner "file" {
     source      = "test.tfvars"
-    destination = "/home/ec2-user/eks-test/test.tfvars"
+    destination = "/home/ec2-user/test.tfvars"
 
     connection {
       user        = "ec2-user"
@@ -25,7 +25,7 @@ resource "aws_instance" "eks_bastion" {
 
   provisioner "file" {
     source      = "backend_config.tfvars"
-    destination = "/home/ec2-user/eks-test/backend_config.tfvars"
+    destination = "/home/ec2-user/backend_config.tfvars"
 
     connection {
       user        = "ec2-user"
@@ -35,7 +35,7 @@ resource "aws_instance" "eks_bastion" {
   }
   provisioner "file" {
     source      = ".gitignore"
-    destination = "/home/ec2-user/eks-test/.gitignore"
+    destination = "/home/ec2-user/.gitignore"
 
     connection {
       user        = "ec2-user"
