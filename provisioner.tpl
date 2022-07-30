@@ -3,7 +3,7 @@ sudo yum update -y
 
 #Upgrade AWS CLI
 pip3 install --upgrade --user awscli
-echo export PATH=$HOME/.local/bin:$PATH  >> /etc/profile
+echo export PATH=$HOME/.local/bin:$PATH | sudo tee -a /etc/profile
 source ~/.bash_profile
 
 #Install kubectl
@@ -33,7 +33,7 @@ sudo ./get_helm.sh
 
 #Install istioctl
 sudo curl -sL https://istio.io/downloadIstioctl | sh -
-echo 'export PATH=$HOME/.istioctl/bin:$PATH' >> /etc/profile
+echo 'export PATH=$HOME/.istioctl/bin:$PATH' | sudo tee -a /etc/profile
 
 
 #Set commands to install eksctl
