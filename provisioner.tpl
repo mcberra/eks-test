@@ -1,11 +1,6 @@
 #!/bin/bash
 sudo yum update -y
 
-#Upgrade AWS CLI
-pip3 install --upgrade --user awscli
-echo export PATH=$HOME/.local/bin:$PATH | sudo tee -a /etc/profile
-source ~/.bash_profile
-
 #Install kubectl
 sudo curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
 sudo chmod +x ./kubectl
@@ -31,11 +26,6 @@ sudo curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/
 sudo chmod 700 get_helm.sh
 sudo ./get_helm.sh
 
-#Install istioctl
-sudo curl -sL https://istio.io/downloadIstioctl | sh -
-echo 'export PATH=$HOME/.istioctl/bin:$PATH' | sudo tee -a /etc/profile
-
-
 #Set commands to install eksctl
 curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
 sudo mv /tmp/eksctl /usr/local/bin
@@ -50,9 +40,9 @@ echo 'export AWS_DEFAULT_REGION=' >> /home/ec2-user/.bashrc
 echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name "' >> /home/ec2-user/.bashrc
 
 #terraform shortcuts
-echo tinit="terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars" >> /home/ec2-user/.bashrc
-echo tplan="terraform plan -var-file=test.tfvars" >> /home/ec2-user/.bashrc
-echo tapply="terraform apply -var-file=test.tfvars -auto-approve" >> /home/ec2-user/.bashrc
+echo tinit='"terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars"' >> /home/ec2-user/.bashrc
+echo tplan='"terraform plan -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
+echo tapply='"terraform apply -var-file=test.tfvars -auto-approve"' >> /home/ec2-user/.bashrc
 
 #Clone repository
 git clone https://github.com/mcberra/eks-test.git /home/ec2-user/eks-test

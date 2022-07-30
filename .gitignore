@@ -1,6 +1,7 @@
 #Ignore tfvars
 *.tfvars
 terraform.exe
+terraform-0.14.0.exe
 
 # Local .terraform directories
 **/.terraform/*
