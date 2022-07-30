@@ -37,8 +37,8 @@ export PATH=$HOME/.istioctl/bin:$PATH
 
 
 #Set commands to install eksctl
-echo 'eks1="curl --silent --location 'https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz' | tar xz -C /tmp"' >> /home/ec2-user/.bashrc
-echo 'eks2="sudo mv /tmp/eksctl /usr/local/bin"' >> /home/ec2-user/.bashrc
+curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+sudo mv /tmp/eksctl /usr/local/bin
 
 #Set profile aliases/variables
 echo 'alias k=kubectl' >> /home/ec2-user/.bashrc
