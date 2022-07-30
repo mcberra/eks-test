@@ -21,6 +21,16 @@ sudo yum install -y wget unzip
 sudo wget https://releases.hashicorp.com/terraform/1.2.6/terraform_1.2.6_linux_amd64.zip
 sudo unzip ./terraform_0.12.2_linux_amd64.zip -d /usr/local/bin
 
+#Install helm
+sudo curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3
+sudo chmod 700 get_helm.sh
+sudo ./get_helm.sh
+
+#Install istioctl
+sudo curl -sL https://istio.io/downloadIstioctl | sh -
+sudo export PATH=$HOME/.istioctl/bin:$PATH
+
+
 #Set commands to install eksctl
 echo 'eks1="curl --silent --location 'https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz' | tar xz -C /tmp"' >> /home/ec2-user/.bashrc
 echo 'eks2="sudo mv /tmp/eksctl /usr/local/bin"' >> /home/ec2-user/.bashrc
