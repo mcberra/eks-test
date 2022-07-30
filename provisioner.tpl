@@ -1,6 +1,11 @@
 #!/bin/bash
 sudo yum update -y
 
+#Upgrade AWS CLI
+sudo pip3 install --upgrade --user awscli
+sudo export PATH=$HOME/.local/bin:$PATH
+sudo source ~/.bash_profile
+
 #Install kubectl
 sudo curl -o kubectl https://s3.us-west-2.amazonaws.com/amazon-eks/1.22.6/2022-03-09/bin/linux/amd64/kubectl
 sudo chmod +x ./kubectl
