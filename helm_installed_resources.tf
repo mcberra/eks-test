@@ -1,34 +1,49 @@
 /*
 resource "helm_release" "istio_base" {
-  name  = "istio-base"
+  name       = "istio-base"
   repository = "https://istio-release.storage.googleapis.com/charts"
-  chart = "base"
+  chart      = "base"
 
-  namespace       = "istio-system"
+  namespace = "istio-system"
 
-  depends_on = [ aws_eks_cluster.macb-eks,kubernetes_namespace.istio-system ]
+  depends_on = [aws_eks_cluster.macb-eks, kubernetes_namespace.istio-system]
 }
 
 resource "helm_release" "istiod" {
-  name  = "istiod"
+  name       = "istiod"
   repository = "https://istio-release.storage.googleapis.com/charts"
-  chart = "istiod"
+  chart      = "istiod"
 
-  namespace       = "istio-system"
+  namespace = "istio-system"
 
-  depends_on = [ aws_eks_cluster.macb-eks,helm_release.istio_base]
+  depends_on = [aws_eks_cluster.macb-eks, helm_release.istio_base]
 }
 
 resource "helm_release" "istio_ingress" {
-  name  = "istio-ingress"
+  name       = "istio-ingress"
   repository = "https://istio-release.storage.googleapis.com/charts"
-  chart = "gateway"
-  namespace       = "istio-system"
+  chart      = "gateway"
+  namespace  = "istio-ingress"
 
-  timeout = 240
+  timeout         = 240
   cleanup_on_fail = true
   force_update    = false
 
-  depends_on = [ aws_eks_cluster.macb-eks,helm_release.istiod ]
+  depends_on = [aws_eks_cluster.macb-eks, helm_release.istiod, kubernetes_namespace.istio-ingress]
+}
+
+resource "helm_release" "cert-manager" {
+  name       = "cert-manager"
+  repository = "https://charts.jetstack.io"
+  chart      = "cert-manager"
+  namespace  = "cert-manager"
+
+  set {
+    name  = "installCRDs"
+    value = "true"
+  }
+
+
+  depends_on = [aws_eks_cluster.macb-eks, kubernetes_namespace.cert-manager]
 }
 */
