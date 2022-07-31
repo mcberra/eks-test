@@ -34,16 +34,6 @@ resource "aws_instance" "eks_bastion" {
     }
   }
   provisioner "file" {
-    source      = ".gitignore"
-    destination = "/home/ec2-user/.gitignore"
-
-    connection {
-      user        = "ec2-user"
-      private_key = tls_private_key.generated.private_key_pem
-      host        = self.public_ip
-    }
-  }
-  provisioner "file" {
     source      = "aws_cli_istioctl_install.sh"
     destination = "/home/ec2-user/aws_cli_istioctl_install.sh"
 

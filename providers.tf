@@ -1,3 +1,19 @@
+terraform {
+  required_providers {
+    kubectl = {
+      source = "gavinbunney/kubectl"
+      version = "1.14.0"
+    }
+  }
+}
+
+provider "kubectl" {
+  host                   = data.aws_eks_cluster.macb-eks.endpoint
+  cluster_ca_certificate = base64decode(data.aws_eks_cluster.macb-eks.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.macb-eks.token
+  load_config_file       = false
+}
+
 provider "aws" {
   region     = var.region
   access_key = var.access_key
@@ -10,6 +26,7 @@ provider "aws" {
   }
 }
 
+/*
 provider "kubernetes" {
   host                   = data.aws_eks_cluster.macb-eks.endpoint
   cluster_ca_certificate = base64decode(data.aws_eks_cluster.macb-eks.certificate_authority[0].data)
@@ -19,9 +36,14 @@ provider "kubernetes" {
     command     = "aws"
   }
 }
+*/
+provider "kubernetes" {
+  config_path = "~/.kube/config"
+  }
 
 provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
   }
 }
+
