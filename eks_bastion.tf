@@ -5,8 +5,8 @@ resource "aws_instance" "eks_bastion" {
   associate_public_ip_address = "true"
   vpc_security_group_ids      = [module.vpc.eks-sg-id]
   #iam_instance_profile        = aws_iam_instance_profile.eks-bastion-profile.name
-  key_name                    = aws_key_pair.generated.key_name
-  user_data                   = file("./scripts/userdata.sh")
+  key_name  = aws_key_pair.generated.key_name
+  user_data = file("./scripts/userdata.sh")
 
   tags = {
     "Name" = "eks_bastion"

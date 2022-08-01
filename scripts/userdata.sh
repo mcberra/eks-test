@@ -46,3 +46,4 @@ echo apply='"terraform apply -var-file=test.tfvars -auto-approve"' >> /home/ec2-
 
 #Clone repository
 git clone https://github.com/mcberra/eks-test.git /home/ec2-user/eks-test
+sudo chown -R ec2-user: /home/ec2-user/eks-test
