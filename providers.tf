@@ -1,13 +1,3 @@
-terraform {
-  required_providers {
-    kubectl = {
-      source = "gavinbunney/kubectl"
-      version = "1.14.0"
-    }
-  }
-  backend "s3" {
-  }
-}
 
 provider "kubectl" {
   host                   = data.aws_eks_cluster.macb-eks.endpoint
