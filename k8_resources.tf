@@ -25,6 +25,7 @@ data "kubectl_file_documents" "grafana" {
 resource "kubectl_manifest" "grafana" {
   count     = length(data.kubectl_file_documents.grafana.documents)
   yaml_body = element(data.kubectl_file_documents.grafana.documents, count.index)
+  depends_on = [kubernetes_namespace.istio-system]
 }
 
 #prometheus
@@ -35,6 +36,7 @@ data "kubectl_file_documents" "prometheus" {
 resource "kubectl_manifest" "prometheus" {
   count     = length(data.kubectl_file_documents.prometheus.documents)
   yaml_body = element(data.kubectl_file_documents.prometheus.documents, count.index)
+  depends_on = [kubernetes_namespace.istio-system]
 }
 
 #kiali
@@ -45,6 +47,7 @@ data "kubectl_file_documents" "kiali" {
 resource "kubectl_manifest" "kiali" {
   count     = length(data.kubectl_file_documents.kiali.documents)
   yaml_body = element(data.kubectl_file_documents.kiali.documents, count.index)
+  depends_on = [kubernetes_namespace.istio-system]
 }
 
 #jaeger
@@ -55,5 +58,6 @@ data "kubectl_file_documents" "jaeger" {
 resource "kubectl_manifest" "jaeger" {
   count     = length(data.kubectl_file_documents.jaeger.documents)
   yaml_body = element(data.kubectl_file_documents.jaeger.documents, count.index)
+  depends_on = [kubernetes_namespace.istio-system]
 }
 */
