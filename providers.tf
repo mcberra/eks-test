@@ -5,6 +5,8 @@ terraform {
       version = "1.14.0"
     }
   }
+  backend "s3" {
+  }
 }
 
 provider "kubectl" {
