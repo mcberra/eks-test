@@ -42,7 +42,8 @@ echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name "' >> /h
 #terraform shortcuts
 echo init='"terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars"' >> /home/ec2-user/.bashrc
 echo plan='"terraform plan -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
-echo apply='"terraform apply -var-file=test.tfvars -auto-approve"' >> /home/ec2-user/.bashrc
+echo apply='"terraform apply -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
+echo destroy='"terraform destroy -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
 
 #Clone repository
 git clone https://github.com/mcberra/eks-test.git /home/ec2-user/eks-test
