@@ -39,3 +39,33 @@ output "vpc_cidr" {
 output "vpc_id" {
   value = module.vpc.eks-vpc-id
 }
+output "vpc-igw-id" {
+  value = module.vpc.eks-igw-id
+}
+output "vpc-eip-id" {
+  value = module.vpc.eks-eip-id
+}
+output "vpc-ngw" {
+  value = var.vpc_cidr
+}
+output "eks-bastion-sg-id" {
+  value = module.vpc.eks-vpc-id
+}
+output "vpc-public-subnet-id-1" {
+  value = module.vpc.eks-public-subnet-id-1
+}
+output "vpc-public-subnet-id-2" {
+  value = module.vpc.eks-public-subnet-id-2
+}
+output "vpc-public-subnet-cidr_block" {
+  value = module.vpc.eks-public-subnet-cidr_block
+}
+output "vpc-private-subnet-id-1" {
+  value = module.vpc.eks-private-subnet-id-1
+}
+output "vpc-private-subnet-id-2" {
+  value = module.vpc.eks-private-subnet-id-2
+}
+output "vpc-private-subnet-cidr_block" {
+  value = module.vpc.eks-private-subnet-cidr_block
+}
