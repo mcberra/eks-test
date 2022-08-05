@@ -49,6 +49,7 @@ resource "aws_iam_role_policy_attachment" "AmazonEC2ContainerRegistryReadOnly-EK
 #Create eks cluster
 resource "aws_eks_cluster" "macb-eks" {
   name     = "macb-eks"
+  version = "1.22"
   role_arn = aws_iam_role.macb-eks-iam-role.arn
 
   vpc_config {
@@ -123,5 +124,6 @@ resource "aws_eks_node_group" "worker-node-group" {
     #aws_iam_role_policy_attachment.AmazonEC2ContainerRegistryReadOnly,
   ]
 }
+
 
 

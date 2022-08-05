@@ -37,7 +37,8 @@ echo 'now="--grace-period 0 --force"' >> /home/ec2-user/.bashrc
 echo 'export AWS_ACCESS_KEY_ID=' >> /home/ec2-user/.bashrc
 echo 'export AWS_SECRET_ACCESS_KEY=' >> /home/ec2-user/.bashrc
 echo 'export AWS_DEFAULT_REGION=' >> /home/ec2-user/.bashrc
-echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name "' >> /home/ec2-user/.bashrc
+echo 'export EKS_CLUSTER=' >> /home/ec2-user/.bashrc
+echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER "' >> /home/ec2-user/.bashrc
 
 #terraform shortcuts
 echo init='"terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars"' >> /home/ec2-user/.bashrc
