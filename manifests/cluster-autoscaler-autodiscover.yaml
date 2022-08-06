@@ -146,7 +146,7 @@ spec:
         fsGroup: 65534
       serviceAccountName: cluster-autoscaler
       containers:
-        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.22.2
+        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.22.3
           name: cluster-autoscaler
           resources:
             limits:
@@ -162,6 +162,8 @@ spec:
             - --cloud-provider=aws
             - --skip-nodes-with-local-storage=false
             - --expander=least-waste
+            - --balance-similar-node-groups
+            - --skip-nodes-with-system-pods=false
             - --node-group-auto-discovery=asg:tag=k8s.io/cluster-autoscaler/enabled,k8s.io/cluster-autoscaler/macb-eks
           volumeMounts:
             - name: ssl-certs

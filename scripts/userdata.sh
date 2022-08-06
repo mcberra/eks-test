@@ -49,3 +49,10 @@ echo destroy='"terraform destroy -var-file=test.tfvars"' >> /home/ec2-user/.bash
 #Clone repository
 git clone https://github.com/mcberra/eks-test.git /home/ec2-user/eks-test
 sudo chown -R ec2-user: /home/ec2-user/eks-test
+
+#Make scripts executables
+chmod 777 /home/ec2-user/eks-test/scripts/aws_cli_istioctl_install.sh
+chmod 777 /home/ec2-user/eks-test/scripts/expose_addons_http.sh
+chmod 777 /home/ec2-user/eks-test/scripts/expose_addons_https.sh
+chmod 777 /home/ec2-user/eks-test/scripts/external_services_auth.sh
+chmod 777 /home/ec2-user/eks-test/scripts/external_services_urls.sh

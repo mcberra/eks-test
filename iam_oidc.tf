@@ -32,7 +32,7 @@ resource "aws_iam_role" "test-oidc" {
 }
 
 resource "aws_iam_policy" "test-policy" {
-  name       = "test-attach"
+  name = "test-attach"
   policy = jsonencode({
     Statement = [{
       Action = [

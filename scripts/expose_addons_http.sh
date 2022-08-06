@@ -132,7 +132,7 @@ spec:
   http:
   - route:
     - destination:
-        host: prometheus
+        host: prometheus-server
         port:
           number: 9090
 ---
@@ -180,7 +180,7 @@ spec:
   http:
   - route:
     - destination:
-        host: tracing
+        host: jaeger-query
         port:
           number: 80
 ---
@@ -197,12 +197,145 @@ spec:
 ---
 EOF
 
+#Patch services with correct port
+
+#Grafana
+kubectl patch svc grafana --type json -p='[{"op": "replace", "path": "/spec/ports/0/port", "value": 3000}]' -n istio-system
+
+#Prometheus
+kubectl patch svc prometheus-server --type json -p='[{"op": "replace", "path": "/spec/ports/0/port", "value": 9090}]' -n istio-system
+
+#Jaeger
+kubectl patch svc jaeger-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
+
+#Update Kiali cm with external services URLs
+cat <<EOF | kubectl replace -f -
+apiVersion: v1
+data:
+  config.yaml: |
+    auth:
+      openid: {}
+      openshift:
+        client_id_prefix: kiali
+      strategy: token
+    deployment:
+      accessible_namespaces:
+      - '**'
+      additional_service_yaml: {}
+      affinity:
+        node: {}
+        pod: {}
+        pod_anti: {}
+      configmap_annotations: {}
+      custom_secrets: []
+      host_aliases: []
+      hpa:
+        api_version: autoscaling/v2
+        spec: {}
+      image_digest: ""
+      image_name: quay.io/kiali/kiali
+      image_pull_policy: Always
+      image_pull_secrets: []
+      image_version: v1.54.0
+      ingress:
+        additional_labels: {}
+        class_name: nginx
+        override_yaml:
+          metadata: {}
+      instance_name: kiali
+      logger:
+        log_format: text
+        log_level: info
+        sampler_rate: "1"
+        time_field_format: 2006-01-02T15:04:05Z07:00
+      namespace: istio-system
+      node_selector: {}
+      pod_annotations: {}
+      pod_labels: {}
+      priority_class_name: ""
+      replicas: 1
+      resources:
+        limits:
+          memory: 1Gi
+        requests:
+          cpu: 10m
+          memory: 64Mi
+      secret_name: kiali
+      service_annotations: {}
+      service_type: ""
+      tolerations: []
+      version_label: v1.54.0
+      view_only_mode: false
+    external_services:
+      prometheus:
+        url: http://prometheus.52.16.198.225.nip.io/
+      grafana:
+        url: http://grafana.52.16.198.225.nip.io/
+      jaeger:
+        url: http://tracing.52.16.198.225.nip.io/
+      custom_dashboards:
+        enabled: true
+      istio:
+        root_namespace: istio-system
+    identity:
+      cert_file: ""
+      private_key_file: ""
+    istio_namespace: istio-system
+    kiali_feature_flags:
+      certificates_information_indicators:
+        enabled: true
+        secrets:
+        - cacerts
+        - istio-ca-secret
+      clustering:
+        enabled: true
+      disabled_features: []
+      validations:
+        ignore:
+        - KIA1201
+    login_token:
+      signing_key: gSEuo0yPicgfkuAH
+    server:
+      metrics_enabled: true
+      metrics_port: 9090
+      port: 20001
+      web_root: /kiali
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: kiali
+    meta.helm.sh/release-namespace: istio-system
+  labels:
+    app: kiali
+    app.kubernetes.io/instance: kiali
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: kiali
+    app.kubernetes.io/part-of: kiali
+    app.kubernetes.io/version: v1.54.0
+    helm.sh/chart: kiali-server-1.54.0
+    version: v1.54.0
+  name: kiali
+  namespace: istio-system
+EOF
+
 #Domains URLs
+printf "\n"
+echo [EXTERNAL SERVICES]
 echo http://kiali.${INGRESS_DOMAIN}
 echo http://prometheus.${INGRESS_DOMAIN}
 echo http://grafana.${INGRESS_DOMAIN}
-echo -e http://tracing.${INGRESS_DOMAIN}\n
-
-#Kiali token
-echo -e kiali-token\n
+echo http://tracing.${INGRESS_DOMAIN}
+printf "\n"
+#Get and store Kiali token
+echo [KIALI TOKEN]
 kubectl get secret -n istio-system $(kubectl get sa kiali -n istio-system -o "jsonpath={.secrets[0].name}") -o jsonpath={.data.token} | base64 -d
+#Get Grafana password
+printf "\n"
+printf "\n"
+echo [GRAFANA PASSWORD]
+kubectl get secrets grafana -n istio-system -ojsonpath='{.data.admin-password}' | base64 -d
+printf "\n"
+printf "\n"
+#Add shortcuts to ec2-user profile on .bashrc file
+echo ext_urls='"sh /home/ec2-user/eks-test/scripts/external_services_urls.sh"' >> /home/ec2-user/.bashrc
+echo ext_auth='"sh /home/ec2-user/eks-test/scripts/external_services_auth.sh"' >> /home/ec2-user/.bashrc
