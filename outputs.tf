@@ -69,3 +69,9 @@ output "vpc-private-subnet-id-2" {
 output "vpc-private-subnet-cidr_block" {
   value = module.vpc.eks-private-subnet-cidr_block
 }
+output "test_policy_arn" {
+  value = aws_iam_role.test-oidc.arn
+}
+output "eks_cluster_autoscaler_role_arn" {
+  value = aws_iam_role.eks_cluster_autoscaler.arn
+}
