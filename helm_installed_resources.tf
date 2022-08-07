@@ -62,7 +62,7 @@ resource "helm_release" "grafana" {
   depends_on = [aws_eks_cluster.macb-eks, kubernetes_namespace.istio-system]
 }
 resource "helm_release" "jaeger" {
-  name       = "jaeger"
+  name       = "jaeger-tracing"
   repository = "https://jaegertracing.github.io/helm-charts"
   chart      = "jaeger"
 

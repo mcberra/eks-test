@@ -37,10 +37,11 @@ echo 'now="--grace-period 0 --force"' >> /home/ec2-user/.bashrc
 echo 'export AWS_ACCESS_KEY_ID=' >> /home/ec2-user/.bashrc
 echo 'export AWS_SECRET_ACCESS_KEY=' >> /home/ec2-user/.bashrc
 echo 'export AWS_DEFAULT_REGION=' >> /home/ec2-user/.bashrc
-echo 'export EKS_CLUSTER=' >> /home/ec2-user/.bashrc
-echo k8='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER "' >> /home/ec2-user/.bashrc
+echo 'export EKS_CLUSTER_NAME=' >> /home/ec2-user/.bashrc
+echo update_kubeconfig='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME "' >> /home/ec2-user/.bashrc
 
 #terraform shortcuts
+echo '"#Terraform shortcuts"' >> /home/ec2-user/.bashrc
 echo init='"terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars"' >> /home/ec2-user/.bashrc
 echo plan='"terraform plan -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
 echo apply='"terraform apply -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
@@ -56,3 +57,7 @@ chmod 777 /home/ec2-user/eks-test/scripts/expose_addons_http.sh
 chmod 777 /home/ec2-user/eks-test/scripts/expose_addons_https.sh
 chmod 777 /home/ec2-user/eks-test/scripts/external_services_auth.sh
 chmod 777 /home/ec2-user/eks-test/scripts/external_services_urls.sh
+
+#Move tfvars files within the repository
+mv /home/ec2-user/backend_config.tfvars /home/ec2-user/eks-test/
+mv /home/ec2-user/test.tfvars /home/ec2-user/eks-test/

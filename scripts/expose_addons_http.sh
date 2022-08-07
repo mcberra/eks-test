@@ -1,5 +1,13 @@
 #!/bin/bash
 
+#Restart pods on the istio-system, istio-ingress and micros namespaces
+kubectl rollout restart deploy -n istio-system
+kubectl rollout restart deploy -n istio-ingress
+kubectl rollout restart deploy -n micros
+
+sleep 30
+
+#Create variables
 export INGRESS_HOST=$(kubectl -n istio-ingress get service istio-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 export INGRESS_DOMAIN=$(dig $INGRESS_HOST | sed -n '14p' | cut -d " " -f 5).nip.io
 
@@ -180,7 +188,7 @@ spec:
   http:
   - route:
     - destination:
-        host: jaeger-query
+        host: jaeger-tracing-query
         port:
           number: 80
 ---
@@ -206,7 +214,7 @@ kubectl patch svc grafana --type json -p='[{"op": "replace", "path": "/spec/port
 kubectl patch svc prometheus-server --type json -p='[{"op": "replace", "path": "/spec/ports/0/port", "value": 9090}]' -n istio-system
 
 #Jaeger
-kubectl patch svc jaeger-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
+#kubectl patch svc jaeger-tracing-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
 
 #Update Kiali cm with external services URLs
 cat <<EOF | kubectl replace -f -

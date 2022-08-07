@@ -9,7 +9,7 @@ JAEGER_URL=$(kubectl get gateway tracing-gateway -n istio-system -ojsonpath='{.s
 
 #Show URLs
 echo [EXTERNAL URLS]
-echo $GRAFANA_URL
-echo $KIALI_URL
-echo $PROMETHEUS_URL
-echo $JAEGER_URL
+echo http://$GRAFANA_URL
+echo http://$KIALI_URL
+echo http://$PROMETHEUS_URL
+echo http://$JAEGER_URL
