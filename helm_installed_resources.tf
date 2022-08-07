@@ -20,10 +20,10 @@ resource "helm_release" "istiod" {
 }
 
 resource "helm_release" "istio_ingress" {
-  name       = "istio-ingress"
+  name       = "istio-ingressgateway"
   repository = "https://istio-release.storage.googleapis.com/charts"
   chart      = "gateway"
-  namespace  = "istio-ingress"
+  namespace  = "istio-ingressgateway"
 
   timeout         = 240
   cleanup_on_fail = true

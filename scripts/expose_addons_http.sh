@@ -1,15 +1,9 @@
 #!/bin/bash
 
-#Restart pods on the istio-system, istio-ingress and micros namespaces
-kubectl rollout restart deploy -n istio-system
-kubectl rollout restart deploy -n istio-ingress
-kubectl rollout restart deploy -n micros
-
-sleep 30
-
 #Create variables
-export INGRESS_HOST=$(kubectl -n istio-ingress get service istio-ingress -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
-export INGRESS_DOMAIN=$(dig $INGRESS_HOST | sed -n '14p' | cut -d " " -f 5).nip.io
+export INGRESS_HOST=$(kubectl -n istio-ingressgateway get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export INGRESS_DOMAIN=$(dig $INGRESS_HOST | sed -n '14p' | cut -d " " -f 5  | cut -f 2).nip.io
+#export INGRESS_DOMAIN=$(dig $INGRESS_HOST | sed -n '15p' | cut -d " " -f 5).nip.io
 
 #Expose addons HTTP
 
@@ -214,7 +208,7 @@ kubectl patch svc grafana --type json -p='[{"op": "replace", "path": "/spec/port
 kubectl patch svc prometheus-server --type json -p='[{"op": "replace", "path": "/spec/ports/0/port", "value": 9090}]' -n istio-system
 
 #Jaeger
-#kubectl patch svc jaeger-tracing-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
+kubectl patch svc jaeger-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
 
 #Update Kiali cm with external services URLs
 cat <<EOF | kubectl replace -f -
@@ -276,13 +270,28 @@ data:
       view_only_mode: false
     external_services:
       prometheus:
-        url: http://prometheus.52.16.198.225.nip.io/
+        url: http://prometheus.${INGRESS_DOMAIN}
       grafana:
-        url: http://grafana.52.16.198.225.nip.io/
+        url: http://grafana.${INGRESS_DOMAIN}
+      tracing:
+        url: http://tracing.${INGRESS_DOMAIN}
       custom_dashboards:
+        discovery_auto_threshold: 10
+        discovery_enabled: "auto"
         enabled: true
+        is_core: false
+        namespace_label: "namespace"
       istio:
-        root_namespace: istio-system
+        component_status:
+          components:
+          - app_label: "istiod"
+            is_core: true
+            is_proxy: false
+          - app_label: "istio-ingressgateway"
+            is_core: true
+            is_proxy: true
+            # default: namespace is undefined
+            namespace: istio-ingressgateway
     identity:
       cert_file: ""
       private_key_file: ""
@@ -324,6 +333,10 @@ metadata:
   namespace: istio-system
 EOF
 
+#Restart Kiali
+kubectl scale deploy kiali --replicas 0 -n istio-system
+sleep 5
+kubectl scale deploy kiali --replicas 1 -n istio-system
 #Domains URLs
 printf "\n"
 echo [EXTERNAL SERVICES]

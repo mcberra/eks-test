@@ -41,7 +41,7 @@ echo 'export EKS_CLUSTER_NAME=' >> /home/ec2-user/.bashrc
 echo update_kubeconfig='"aws eks update-kubeconfig --region $AWS_DEFAULT_REGION --name $EKS_CLUSTER_NAME "' >> /home/ec2-user/.bashrc
 
 #terraform shortcuts
-echo '"#Terraform shortcuts"' >> /home/ec2-user/.bashrc
+echo '#Terraform shortcuts' >> /home/ec2-user/.bashrc
 echo init='"terraform init -var-file=test.tfvars -backend-config=backend_config.tfvars"' >> /home/ec2-user/.bashrc
 echo plan='"terraform plan -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
 echo apply='"terraform apply -var-file=test.tfvars"' >> /home/ec2-user/.bashrc
