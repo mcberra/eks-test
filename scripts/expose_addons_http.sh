@@ -279,8 +279,6 @@ data:
         url: http://prometheus.52.16.198.225.nip.io/
       grafana:
         url: http://grafana.52.16.198.225.nip.io/
-      jaeger:
-        url: http://tracing.52.16.198.225.nip.io/
       custom_dashboards:
         enabled: true
       istio:
