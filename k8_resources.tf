@@ -9,15 +9,6 @@ resource "kubernetes_namespace" "istio-system" {
   }
 }
 
-resource "kubernetes_namespace" "istio-ingress" {
-  metadata {
-    name = "istio-ingress"
-
-  labels = {
-    istio-injection = "enabled"
-  }
-  }
-}
 resource "kubernetes_namespace" "cert-manager" {
   metadata {
     name = "cert-manager"

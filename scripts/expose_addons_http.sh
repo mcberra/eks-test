@@ -1,7 +1,7 @@
 #!/bin/bash
 
 #Create variables
-export INGRESS_HOST=$(kubectl -n istio-ingressgateway get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
+export INGRESS_HOST=$(kubectl -n istio-system get service istio-ingressgateway -o jsonpath='{.status.loadBalancer.ingress[0].hostname}')
 export INGRESS_DOMAIN=$(dig $INGRESS_HOST | sed -n '14p' | cut -d " " -f 5  | cut -f 2).nip.io
 #export INGRESS_DOMAIN=$(dig $INGRESS_HOST | sed -n '15p' | cut -d " " -f 5).nip.io
 
@@ -208,7 +208,7 @@ kubectl patch svc grafana --type json -p='[{"op": "replace", "path": "/spec/port
 kubectl patch svc prometheus-server --type json -p='[{"op": "replace", "path": "/spec/ports/0/port", "value": 9090}]' -n istio-system
 
 #Jaeger
-kubectl patch svc jaeger-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
+kubectl patch svc jaeger-tracing-query --type json -p='[{"op": "replace", "path": "/spec/ports/0/targetPort", "value": 16686}]' -n istio-system
 
 #Update Kiali cm with external services URLs
 cat <<EOF | kubectl replace -f -

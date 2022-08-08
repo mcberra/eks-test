@@ -23,13 +23,13 @@ resource "helm_release" "istio_ingress" {
   name       = "istio-ingressgateway"
   repository = "https://istio-release.storage.googleapis.com/charts"
   chart      = "gateway"
-  namespace  = "istio-ingressgateway"
+  namespace  = "istio-system"
 
   timeout         = 240
   cleanup_on_fail = true
   force_update    = false
 
-  depends_on = [aws_eks_cluster.macb-eks, helm_release.istiod, kubernetes_namespace.istio-ingress]
+  depends_on = [aws_eks_cluster.macb-eks, helm_release.istiod, kubernetes_namespace.istio-system]
 }
 
 resource "helm_release" "kiali" {
