@@ -16,7 +16,7 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    istio: ingress
+    istio: ingressgateway
   servers:
   - port:
       number: 80
@@ -64,7 +64,7 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    istio: ingress
+    istio: ingressgateway
   servers:
   - port:
       number: 80
@@ -112,7 +112,7 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    istio: ingress
+    istio: ingressgateway
   servers:
   - port:
       number: 80
@@ -160,7 +160,7 @@ metadata:
   namespace: istio-system
 spec:
   selector:
-    istio: ingress
+    istio: ingressgateway
   servers:
   - port:
       number: 80
@@ -291,7 +291,7 @@ data:
             is_core: true
             is_proxy: true
             # default: namespace is undefined
-            namespace: istio-ingressgateway
+            namespace: istio-system
     identity:
       cert_file: ""
       private_key_file: ""
